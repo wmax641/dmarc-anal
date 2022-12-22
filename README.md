@@ -1,6 +1,6 @@
 ## dmarc-anal
 
-PoC project based off @debricked/dmarc-visualizer, but using MS Graph to pull DMARC agg reports from an O365 mailbox, and also built with production usage in mind
+PoC project based off @debricked/dmarc-visualizer, but using MS Graph to pull DMARC agg reports from an O365 mailbox.
 
 Expected flow is to: 
 * Read DMARC agg reports from an O365 inbox via MS Graph / Azure App

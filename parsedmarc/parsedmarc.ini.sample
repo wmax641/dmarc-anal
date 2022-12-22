@@ -4,6 +4,7 @@ save_aggregate = True
 save_forensic = False
 silent = False
 debug = True
+#ip_db_path = ./geoip.sql
 
 [mailbox]
 reports_folder = dmarc
