@@ -12,5 +12,5 @@ COPY parsedmarc.ini ./
 
 RUN pip3 install parsedmarc
 
-ENTRYPOINT ["parsedmarc", "-c", "parsedmarc.ini"]
-#ENTRYPOINT ["tail", "-f", "/dev/null"]
+#ENTRYPOINT ["parsedmarc", "-c", "parsedmarc.ini"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]

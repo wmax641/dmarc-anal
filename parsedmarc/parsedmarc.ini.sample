@@ -19,3 +19,7 @@ client_id = <CHANGE THIS xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx >
 client_secret = <CHANGE THIS xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx >
 tenant_id = <CHANGE THIS xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx >
 mailbox = <CHANGE THIS username@mailbox.com>
+
+[elasticsearch]
+hosts = elasticsearch:9200
+ssl = False
