@@ -31,5 +31,6 @@ cp parsedmarc.ini.sample parsedmarc.ini
 ```
 docker-compose up -d
 ```
-Grafana interface will be available on localhost:3000, and parsedmarc will begin reading from the configured mailbox/folder. However, the parsedmarc container may fail a few times before it works as it has to wait for elasticsearch app to become operatoinal.
+Grafana interface will be available on localhost:3000, and parsedmarc will begin reading from the configured mailbox/folder. However, the parsedmarc container may fail a few times before it works as it waits for elasticsearch app to become operatoinal.
 
+Then send some DMARC aggregate reports as attachments into the targeted mailbox/folder
