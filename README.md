@@ -8,9 +8,9 @@ Expected flow is to:
 * Grafana to read from ElasticSearch
 
 ## Setup
-* Configure the `parsedmarc.ini` config file for MS Graph API usage, based off the sample. 
+* Configure the `parsedmarc.ini` config file for MS Graph API usage, based off the sample provided at `./parsedmarc.ini.sample`. 
 ```
-cd parsedmarc
+cd ./parsedmarc
 cp parsedmarc.ini.sample parsedmarc.ini
 ```
 
@@ -26,3 +26,10 @@ cp parsedmarc.ini.sample parsedmarc.ini
 ./grafana/Dockerfile
 ./parsedmarc/Dockerfile
 ```
+
+## Run
+```
+docker-compose up -d
+```
+Grafana interface will be available on localhost:3000, and parsedmarc will begin reading from the configured mailbox/folder. However, the parsedmarc container may fail a few times before it works as it has to wait for elasticsearch app to become operatoinal.
+
