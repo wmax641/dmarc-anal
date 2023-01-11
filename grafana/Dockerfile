@@ -1,4 +1,5 @@
-FROM grafana/grafana-oss:main
+#FROM grafana/grafana-oss:main
+FROM grafana/grafana-oss:9.3.2
 
 USER root
 RUN cp /usr/share/zoneinfo/Australia/Sydney /etc/localtime
