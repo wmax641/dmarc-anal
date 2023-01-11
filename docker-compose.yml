@@ -6,12 +6,18 @@ services:
       - elasticsearch
       - grafana
     restart: on-failure
+    networks:
+      - dmarc_anal
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.8@sha256:2fe49bcdae9b623f1a38f979bfe51d2d7df94515dba731b1e1be9932349e1374
-    #image: docker.elastic.co/elasticsearch/elasticsearch:8.6.0@sha256:f7f8c619850471f9433d4cc43cdb65b629a222cff6527dc4e0dfeaa71211a138 
     environment:
       - discovery.type=single-node
+      - bootstrap.memory_lock=true
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    networks:
+      - dmarc_anal
 
   grafana:
     build: ./grafana/
@@ -21,3 +27,12 @@ services:
     environment:
       GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-worldmap-panel
       GF_AUTH_ANONYMOUS_ENABLED: 'true'
+    networks:
+      - dmarc_anal
+
+volumes:
+  es_data: {}
+
+networks:
+  dmarc_anal:
+    driver: bridge
