@@ -27,11 +27,14 @@ services:
     environment:
       GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-worldmap-panel
       GF_AUTH_ANONYMOUS_ENABLED: 'true'
+    volumes:
+      - grafana_data:/var/lib/grafana
     networks:
       - dmarc_anal
 
 volumes:
   es_data: {}
+  grafana_data: {}
 
 networks:
   dmarc_anal:
