@@ -8,13 +8,13 @@ Expected flow is to:
 * Grafana to read from ElasticSearch
 
 ## Setup
-* Configure the `parsedmarc.ini` config file for MS Graph API usage, based off the sample provided at `./parsedmarc.ini.sample`. 
+* Configure the `./parsedmarc/parsedmarc.ini` config file for MS Graph API usage, based off the sample provided at `./parsedmarc.ini.sample`. 
 ```
 cd ./parsedmarc
 cp parsedmarc.ini.sample parsedmarc.ini
 ```
 
-* Choose target Elasticsearch and Grafana versions to use. Update references in:
+* Choose target Elasticsearch and Grafana versions to use if not using currently configured defualts. Update references in:
 ```
 ./docker-compose.yml
 ./grafana/Dockerfile
