@@ -1,6 +1,8 @@
 ## dmarc-anal
 
-PoC project based off @debricked/dmarc-visualizer, but using MS Graph to pull DMARC agg reports from an O365 mailbox.
+DMARC analysis visualiser
+
+PoC based off @debricked/dmarc-visualizer, but using MS Graph to pull DMARC agg reports from an O365 mailbox, and with updated dashboards.
 
 Expected flow is to: 
 * Read DMARC agg reports from an O365 inbox via MS Graph / Azure App
@@ -8,17 +10,17 @@ Expected flow is to:
 * Grafana to read from ElasticSearch
 
 ## Setup
-* Configure the `./parsedmarc/parsedmarc.ini` config file for MS Graph API usage, based off the sample provided at `./parsedmarc.ini.sample`. 
+* Configure the `./parsedmarc/parsedmarc.ini` config file for MS Graph API usage, based off the sample provided at `./parsedmarc.ini.sample`. Also edit any other configurations like mailbox/folder name.
 ```
 cd ./parsedmarc
 cp parsedmarc.ini.sample parsedmarc.ini
+# (edit parsedmarc.ini)
 ```
 
 * Choose target Elasticsearch and Grafana versions to use if not using currently configured defualts. Update references in:
 ```
 ./docker-compose.yml
 ./grafana/Dockerfile
-./grafana/grafana_dmarc_dashboard.json
 ```
 
 * Update timezones in dockerfiles;
@@ -37,4 +39,4 @@ Then send some DMARC aggregate reports as attachments into the targeted mailbox/
 
 ## Notes
 
-* Currently have to us elasticsearch 7.x, as 8.x operates radically differently with certs and auth.
+* Currently have to use elasticsearch 7.x, as 8.x operates radically differently with certs and auth.
