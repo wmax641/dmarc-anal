@@ -17,6 +17,12 @@ cp parsedmarc.ini.sample parsedmarc.ini
 # (edit parsedmarc.ini)
 ```
 
+* Set up Maxmind GeoLite2 API credentials; `./parsedmarc/GeoIP.conf`. If you don't have your own MaxMind GeoLite2 API credentials, then comment out GeoIP DB config in the below files. `parsedmarc` will then use the default DB that it comes packaged with, which is a bit old.
+```
+./parsedmarc/GeoIP.conf         # fill with Maxmind GeoLite2 API credentials
+./parsedmarc/parsedmarc.ini
+```
+
 * Choose target Elasticsearch and Grafana versions to use if not using currently configured defualts. Update references in:
 ```
 ./docker-compose.yml

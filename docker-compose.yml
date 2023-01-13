@@ -1,7 +1,10 @@
 version: '3.3'
 services:
   parsedmarc:
-    build: ./parsedmarc/
+    build:
+      context: ./parsedmarc/
+      args:
+        - MMDB_VERSION=4.10.0
     depends_on:
       - elasticsearch
       - grafana
@@ -26,7 +29,6 @@ services:
       - 3000:3000
     user: root
     environment:
-      #GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-worldmap-panel
       GF_INSTALL_PLUGINS: grafana-worldmap-panel
       GF_AUTH_ANONYMOUS_ENABLED: 'true'
     networks:

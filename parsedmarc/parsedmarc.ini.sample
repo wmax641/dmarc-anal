@@ -4,7 +4,9 @@ save_aggregate = True
 save_forensic = False
 silent = False
 debug = True
-#ip_db_path = ./geoip.sql
+# Comment this out if you don't have MaxMind GeoLite API credentials
+# parsedmarc will then use the default geoip DB that it comes packaged with 
+ip_db_path = /app/GeoLite2-Country.mmdb
 
 [mailbox]
 reports_folder = dmarc
