@@ -46,3 +46,7 @@ Then send some DMARC aggregate reports as attachments into the targeted mailbox/
 ## Notes
 
 * Currently have to use elasticsearch 7.x, as 8.x operates radically differently with certs and auth.
+
+* The only part of this project which reads untrusted input is the `parsedmarc` package reading XML DMARC reports sent in from the internet. `parsedmarc` itself uses the `xmltodict` package to do this risky operation. `xmltodict` itself is using the special `defusedxml / defusedexpat` XML modules which uses modified subclasses of stdlib XML parsers to prevent potentially malicious operation.
+
+see - https://docs.python.org/3/library/xml.html#defusedxml-package

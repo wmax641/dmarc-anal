@@ -176,7 +176,9 @@
           "displayMode": "table",
           "placement": "right",
           "showLegend": true,
-          "values": []
+          "values": [
+            "value"
+          ]
         },
         "pieType": "pie",
         "reduceOptions": {
@@ -187,7 +189,7 @@
           "values": false
         },
         "tooltip": {
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         }
       },
@@ -1696,6 +1698,684 @@
     },
     {
       "datasource": {
+        "type": "elasticsearch",
+        "uid": "$datasourceag"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "displayMode": "auto",
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Header From"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 300
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Messages"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 20
+                    },
+                    {
+                      "color": "orange",
+                      "value": 200
+                    },
+                    {
+                      "color": "super-light-red",
+                      "value": 999.9999
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 17,
+        "w": 8,
+        "x": 0,
+        "y": 23
+      },
+      "id": 11,
+      "links": [],
+      "options": {
+        "footer": {
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Messages"
+          }
+        ]
+      },
+      "pluginVersion": "9.3.2",
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "$$hashKey": "object:388",
+              "fake": true,
+              "field": "header_from.keyword",
+              "id": "6",
+              "settings": {
+                "min_doc_count": 1,
+                "missing": "none",
+                "order": "desc",
+                "orderBy": "4",
+                "size": "0"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "uid": "$datasourceag"
+          },
+          "hide": false,
+          "metrics": [
+            {
+              "field": "message_count",
+              "id": "4",
+              "type": "sum"
+            }
+          ],
+          "query": "header_from.keyword:$fromdomain",
+          "refId": "A",
+          "timeField": "date_range"
+        }
+      ],
+      "title": "Message Volume by Header From",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Sum": "Messages",
+              "header_from.keyword": "Header From"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "$datasourceag"
+      },
+      "description": "true - DMARC validation passed\n\nfalse - DMARC validation failed",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "DMARC Validation Result"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "color": "red",
+                        "index": 0,
+                        "text": "false"
+                      },
+                      "1": {
+                        "color": "green",
+                        "index": 1,
+                        "text": "true"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 8,
+        "y": 23
+      },
+      "id": 44,
+      "links": [],
+      "options": {
+        "footer": {
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": false
+      },
+      "pluginVersion": "9.3.2",
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "fake": true,
+              "field": "passed_dmarc",
+              "id": "3",
+              "settings": {
+                "min_doc_count": 1,
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "0"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "uid": "$datasourceag"
+          },
+          "hide": false,
+          "metrics": [
+            {
+              "field": "message_count",
+              "id": "1",
+              "type": "sum"
+            }
+          ],
+          "query": "header_from.keyword:$fromdomain",
+          "refId": "A",
+          "timeField": "date_range"
+        }
+      ],
+      "title": "DMARC Validation Results",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Sum": "Count",
+              "passed_dmarc": "DMARC Validation Result"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "P908EE4D5633EB9E4"
+      },
+      "description": "Action taken by the reporting email server after performing DMARC validation and arriving at a result\n\nnone - No action taken to stop the email\n\nquarantine - Email sent to quarantine (or junk)\n\nreject - Email outright rejected by the receiving email relay",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "DMARC Disposition"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "none": {
+                        "color": "green",
+                        "index": 0
+                      },
+                      "quarantine": {
+                        "color": "orange",
+                        "index": 1
+                      },
+                      "reject": {
+                        "color": "red",
+                        "index": 2
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 23
+      },
+      "id": 42,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": false
+      },
+      "pluginVersion": "9.3.2",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "disposition.keyword",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "asc",
+                "orderBy": "_term",
+                "size": "10"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "P908EE4D5633EB9E4"
+          },
+          "metrics": [
+            {
+              "field": "message_count",
+              "id": "1",
+              "type": "sum"
+            }
+          ],
+          "query": "header_from.keyword:$fromdomain",
+          "refId": "A",
+          "timeField": "date_range"
+        }
+      ],
+      "title": "DMARC Disposition",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "disposition.keyword": "DMARC Disposition"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "uid": "$datasourceag"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Country"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 69
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Messages"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "super-light-green",
+                      "value": 10
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 100
+                    },
+                    {
+                      "color": "semi-dark-yellow",
+                      "value": 200
+                    },
+                    {
+                      "color": "red",
+                      "value": 500
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 110
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 5,
+        "x": 8,
+        "y": 29
+      },
+      "id": 39,
+      "links": [],
+      "options": {
+        "footer": {
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": false,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Messages"
+          }
+        ]
+      },
+      "pluginVersion": "9.3.2",
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "$$hashKey": "object:524",
+              "fake": true,
+              "field": "source_country.keyword",
+              "id": "6",
+              "settings": {
+                "min_doc_count": 1,
+                "missing": "none",
+                "order": "desc",
+                "orderBy": "4",
+                "size": "0"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "uid": "$datasourceag"
+          },
+          "hide": false,
+          "metrics": [
+            {
+              "$$hashKey": "object:522",
+              "field": "message_count",
+              "id": "4",
+              "meta": {},
+              "settings": {},
+              "type": "sum"
+            }
+          ],
+          "query": "header_from.keyword:$fromdomain",
+          "refId": "A",
+          "timeField": "date_range"
+        }
+      ],
+      "title": "Sender Source Country",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Sum": "Messages",
+              "source_country.keyword": "Country"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "circleMaxSize": "25",
+      "circleMinSize": 2,
+      "colors": [
+        "#FFF899",
+        "#E0B400",
+        "#FF9830",
+        "#F2495C"
+      ],
+      "datasource": {
+        "uid": "$datasourceag"
+      },
+      "decimals": 0,
+      "esMetric": "Count",
+      "gridPos": {
+        "h": 11,
+        "w": 11,
+        "x": 13,
+        "y": 29
+      },
+      "hideEmpty": true,
+      "hideZero": true,
+      "id": 12,
+      "initialZoom": "1",
+      "links": [],
+      "locationData": "countries",
+      "mapCenter": "(0°, 0°)",
+      "mapCenterLatitude": 0,
+      "mapCenterLongitude": 0,
+      "maxDataPoints": 1,
+      "mouseWheelZoom": true,
+      "showLegend": true,
+      "stickyLabels": true,
+      "tableQueryOptions": {
+        "geohashField": "geohash",
+        "latitudeField": "latitude",
+        "longitudeField": "longitude",
+        "metricField": "metric",
+        "queryType": "geohash"
+      },
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "$$hashKey": "object:710",
+              "fake": true,
+              "field": "source_country.keyword",
+              "id": "7",
+              "settings": {
+                "min_doc_count": 1,
+                "order": "desc",
+                "orderBy": "4",
+                "size": "0"
+              },
+              "type": "terms"
+            },
+            {
+              "$$hashKey": "object:711",
+              "fake": true,
+              "field": "date_range",
+              "id": "6",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "uid": "$datasourceag"
+          },
+          "hide": false,
+          "metrics": [
+            {
+              "$$hashKey": "object:708",
+              "field": "message_count",
+              "id": "4",
+              "meta": {},
+              "settings": {},
+              "type": "sum"
+            }
+          ],
+          "query": "header_from.keyword:$fromdomain",
+          "refId": "A",
+          "timeField": "date_range"
+        }
+      ],
+      "thresholds": "10,500,1500",
+      "title": "Map of Sender Source Countries",
+      "type": "grafana-worldmap-panel",
+      "unitPlural": "",
+      "unitSingle": "",
+      "unitSingular": "",
+      "valueName": "total"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
         "uid": "$datasourceag"
       },
       "fieldConfig": {
@@ -1753,12 +2433,8 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 400
-              },
-              {
                 "id": "custom.displayMode",
-                "value": "gradient-gauge"
+                "value": "color-text"
               },
               {
                 "id": "thresholds",
@@ -1810,13 +2486,14 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 23
+        "y": 40
       },
       "id": 14,
       "interval": "",
       "links": [],
       "options": {
         "footer": {
+          "enablePagination": true,
           "fields": "",
           "reducer": [
             "sum"
@@ -1890,6 +2567,17 @@
                 "size": "1000"
               },
               "type": "terms"
+            },
+            {
+              "field": "disposition.keyword",
+              "id": "10",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "10"
+              },
+              "type": "terms"
             }
           ],
           "datasource": {
@@ -1920,6 +2608,7 @@
             "indexByName": {},
             "renameByName": {
               "Sum": "Messages",
+              "disposition.keyword": "DMARC Disposition",
               "source_base_domain.keyword": "Base Domain",
               "source_country.keyword": "Country",
               "source_ip_address.keyword": "IP Address",
@@ -1966,7 +2655,7 @@
             "properties": [
               {
                 "id": "custom.displayMode",
-                "value": "gradient-gauge"
+                "value": "color-text"
               },
               {
                 "id": "thresholds",
@@ -1976,10 +2665,6 @@
                     {
                       "color": "green",
                       "value": null
-                    },
-                    {
-                      "color": "dark-purple",
-                      "value": 101
                     }
                   ]
                 }
@@ -1990,7 +2675,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 400
+                "value": 100
               }
             ]
           },
@@ -2009,6 +2694,10 @@
                     "url": "https://${__data.fields[\"source_base_domain.keyword\"]}"
                   }
                 ]
+              },
+              {
+                "id": "custom.width",
+                "value": 321
               }
             ]
           },
@@ -2027,6 +2716,10 @@
                     "url": "https://dmarcian.com/spf-survey/?domain=${__data.fields[\"header_from.keyword\"]}"
                   }
                 ]
+              },
+              {
+                "id": "custom.width",
+                "value": 254
               }
             ]
           }
@@ -2036,12 +2729,13 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 49
       },
       "id": 16,
       "links": [],
       "options": {
         "footer": {
+          "enablePagination": true,
           "fields": "",
           "reducer": [
             "sum"
@@ -2206,7 +2900,7 @@
             "properties": [
               {
                 "id": "custom.displayMode",
-                "value": "gradient-gauge"
+                "value": "color-text"
               },
               {
                 "id": "thresholds",
@@ -2230,7 +2924,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 144
+                "value": 100
               }
             ]
           },
@@ -2260,7 +2954,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 288
+                "value": 283
               },
               {
                 "id": "links",
@@ -2304,12 +2998,13 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 41
+        "y": 58
       },
       "id": 40,
       "links": [],
       "options": {
         "footer": {
+          "enablePagination": true,
           "fields": "",
           "reducer": [
             "sum"
@@ -2454,404 +3149,6 @@
         }
       ],
       "type": "table"
-    },
-    {
-      "datasource": {
-        "uid": "$datasourceag"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "auto",
-            "displayMode": "auto",
-            "filterable": false,
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Header From"
-            },
-            "properties": [
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "targetBlank": true,
-                    "title": "Open ${__data.fields[\"header_from.keyword\"]} in new window",
-                    "url": "https://${__data.fields[\"header_from.keyword\"]}"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Messages"
-            },
-            "properties": [
-              {
-                "id": "custom.displayMode",
-                "value": "gradient-gauge"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "percentage",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "dark-purple",
-                      "value": 101
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 14,
-        "x": 0,
-        "y": 50
-      },
-      "id": 11,
-      "links": [],
-      "options": {
-        "footer": {
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Messages"
-          }
-        ]
-      },
-      "pluginVersion": "9.3.2",
-      "targets": [
-        {
-          "bucketAggs": [
-            {
-              "$$hashKey": "object:388",
-              "fake": true,
-              "field": "header_from.keyword",
-              "id": "6",
-              "settings": {
-                "min_doc_count": 1,
-                "missing": "none",
-                "order": "desc",
-                "orderBy": "4",
-                "size": "0"
-              },
-              "type": "terms"
-            }
-          ],
-          "datasource": {
-            "uid": "$datasourceag"
-          },
-          "hide": false,
-          "metrics": [
-            {
-              "$$hashKey": "object:386",
-              "field": "message_count",
-              "id": "4",
-              "meta": {},
-              "settings": {},
-              "type": "sum"
-            }
-          ],
-          "query": "header_from.keyword:$fromdomain",
-          "refId": "A",
-          "timeField": "date_range"
-        }
-      ],
-      "title": "Message Volume by Header From",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "Sum": "Messages",
-              "header_from.keyword": "Header From"
-            }
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "uid": "$datasourceag"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "auto",
-            "displayMode": "auto",
-            "filterable": false,
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Country"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 70
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Messages"
-            },
-            "properties": [
-              {
-                "id": "custom.displayMode",
-                "value": "gradient-gauge"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "percentage",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "dark-purple",
-                      "value": 101
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 10,
-        "x": 14,
-        "y": 50
-      },
-      "id": 39,
-      "links": [],
-      "options": {
-        "footer": {
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Messages"
-          }
-        ]
-      },
-      "pluginVersion": "9.3.2",
-      "targets": [
-        {
-          "bucketAggs": [
-            {
-              "$$hashKey": "object:524",
-              "fake": true,
-              "field": "source_country.keyword",
-              "id": "6",
-              "settings": {
-                "min_doc_count": 1,
-                "missing": "none",
-                "order": "desc",
-                "orderBy": "4",
-                "size": "0"
-              },
-              "type": "terms"
-            }
-          ],
-          "datasource": {
-            "uid": "$datasourceag"
-          },
-          "hide": false,
-          "metrics": [
-            {
-              "$$hashKey": "object:522",
-              "field": "message_count",
-              "id": "4",
-              "meta": {},
-              "settings": {},
-              "type": "sum"
-            }
-          ],
-          "query": "header_from.keyword:$fromdomain",
-          "refId": "A",
-          "timeField": "date_range"
-        }
-      ],
-      "title": "Message Source Countries",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "Sum": "Messages",
-              "source_country.keyword": "Country"
-            }
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "circleMaxSize": "25",
-      "circleMinSize": 2,
-      "colors": [
-        "#FFF899",
-        "#E0B400",
-        "#FF9830",
-        "#F2495C"
-      ],
-      "datasource": {
-        "uid": "$datasourceag"
-      },
-      "decimals": 0,
-      "esMetric": "Count",
-      "gridPos": {
-        "h": 13,
-        "w": 24,
-        "x": 0,
-        "y": 58
-      },
-      "hideEmpty": true,
-      "hideZero": true,
-      "id": 12,
-      "initialZoom": "1",
-      "links": [],
-      "locationData": "countries",
-      "mapCenter": "(0°, 0°)",
-      "mapCenterLatitude": 0,
-      "mapCenterLongitude": 0,
-      "maxDataPoints": 1,
-      "mouseWheelZoom": true,
-      "showLegend": true,
-      "stickyLabels": true,
-      "tableQueryOptions": {
-        "geohashField": "geohash",
-        "latitudeField": "latitude",
-        "longitudeField": "longitude",
-        "metricField": "metric",
-        "queryType": "geohash"
-      },
-      "targets": [
-        {
-          "bucketAggs": [
-            {
-              "$$hashKey": "object:710",
-              "fake": true,
-              "field": "source_country.keyword",
-              "id": "7",
-              "settings": {
-                "min_doc_count": 1,
-                "order": "desc",
-                "orderBy": "4",
-                "size": "0"
-              },
-              "type": "terms"
-            },
-            {
-              "$$hashKey": "object:711",
-              "fake": true,
-              "field": "date_range",
-              "id": "6",
-              "settings": {
-                "interval": "auto",
-                "min_doc_count": 0,
-                "trimEdges": 0
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "uid": "$datasourceag"
-          },
-          "hide": false,
-          "metrics": [
-            {
-              "$$hashKey": "object:708",
-              "field": "message_count",
-              "id": "4",
-              "meta": {},
-              "settings": {},
-              "type": "sum"
-            }
-          ],
-          "query": "header_from.keyword:$fromdomain",
-          "refId": "A",
-          "timeField": "date_range"
-        }
-      ],
-      "thresholds": "10,500,1500",
-      "title": "Map of Message Source Countries",
-      "type": "grafana-worldmap-panel",
-      "unitPlural": "",
-      "unitSingle": "",
-      "unitSingular": "",
-      "valueName": "total"
     }
   ],
   "refresh": "15m",
@@ -2959,7 +3256,7 @@
       {
         "datasource": {
           "type": "elasticsearch",
-          "uid": "$datasourceag"
+          "uid": "P908EE4D5633EB9E4"
         },
         "filters": [],
         "hide": 0,
