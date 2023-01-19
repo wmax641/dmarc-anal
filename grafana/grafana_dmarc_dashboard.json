@@ -58,7 +58,7 @@
               "showLineNumbers": false,
               "showMiniMap": false
             },
-            "content": "# DMARC Alignment Guide\r\nDMARC ensures that SPF and DKIM authentication mechanisms actually authenticate against the same domain that the end user sees displayed in their email clients.\r\n\r\n## DMARC validation passes if these conditions are BOTH satisfied: \r\n\r\n* passing either DKIM **or** SPF, \r\n* the corresponding indicator is also in alignment; see below for alignment definitions\r\n\r\n### Definitions:\r\n\r\n**SPF Pass**  - The IP address of the email sender is authorized to send from the domain. SPF validates against the RFC5321.Envelope FROM.\r\n\r\n**DKIM Pass** - At least 1 signature in the DKIM header is successfully validated. DKIM validates against the domain specified in the DKIM signature.\r\n\r\n**SPF Alignment** - The email domain used for SPF validation (RFC5321.Envelope FROM) aligns with the domain in the message's from header that's displayed in the email client (RFC5322.Header FROM)\r\n\r\n**DKIM Alignment** - The at least 1 email domain found in a successfully validated DKIM signature aligns with the domain in the message's from header that's displayed in the email client (RFC5322.Header FROM)",
+            "content": "# DMARC Alignment Guide\r\nDMARC ensures that SPF and DKIM authentication mechanisms actually authenticate against the same domain that the end user sees displayed in their email clients.\r\n\r\nThis is acheived if **BOTH** these conditions are satisfied\r\n* passing either DKIM **or** SPF, \r\n* the corresponding passing indicator is also in alignment; see below for alignment definitions\r\n\r\n### Definitions:\r\n\r\n**SPF Pass**  - The IP address of the email sender is authorized to send from the domain. SPF validates against the RFC5321.Envelope FROM.\r\n\r\n**DKIM Pass** - At least 1 signature in the DKIM header is successfully validated. DKIM validates against the domain specified in the DKIM signature.\r\n\r\n**SPF Alignment** - The email domain used for SPF validation (RFC5321.Envelope FROM) aligns with the domain in the message's from header that's displayed in the email client (RFC5322.Header FROM)\r\n\r\n**DKIM Alignment** - At least 1 validated DKIM signature's designated email domain aligns with the domain in the message's from header that's displayed in the email client (RFC5322.Header FROM)\r\n\r\n",
             "mode": "markdown"
           },
           "pluginVersion": "9.3.2",
@@ -158,7 +158,7 @@
         ]
       },
       "gridPos": {
-        "h": 7,
+        "h": 11,
         "w": 6,
         "x": 0,
         "y": 2
@@ -173,12 +173,10 @@
         ],
         "legend": {
           "calcs": [],
-          "displayMode": "table",
-          "placement": "right",
+          "displayMode": "list",
+          "placement": "bottom",
           "showLegend": true,
-          "values": [
-            "value"
-          ]
+          "values": []
         },
         "pieType": "pie",
         "reduceOptions": {
@@ -242,6 +240,267 @@
       ],
       "title": "DMARC Validation Results",
       "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "$datasourceag"
+      },
+      "description": "true - DMARC validation passed\n\nfalse - DMARC validation failed",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "DMARC Validation Result"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "color": "red",
+                        "index": 0,
+                        "text": "false"
+                      },
+                      "1": {
+                        "color": "green",
+                        "index": 1,
+                        "text": "true"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 9,
+        "x": 6,
+        "y": 2
+      },
+      "id": 44,
+      "links": [],
+      "options": {
+        "footer": {
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": false
+      },
+      "pluginVersion": "9.3.2",
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "fake": true,
+              "field": "passed_dmarc",
+              "id": "3",
+              "settings": {
+                "min_doc_count": 1,
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "0"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "uid": "$datasourceag"
+          },
+          "hide": false,
+          "metrics": [
+            {
+              "field": "message_count",
+              "id": "1",
+              "type": "sum"
+            }
+          ],
+          "query": "header_from.keyword:$fromdomain",
+          "refId": "A",
+          "timeField": "date_range"
+        }
+      ],
+      "title": "DMARC Validation Results",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Sum": "Count",
+              "passed_dmarc": "DMARC Validation Result"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "P908EE4D5633EB9E4"
+      },
+      "description": "Action taken by the reporting email server after performing DMARC validation and arriving at a result\n\nnone - No action taken to stop the email\n\nquarantine - Email sent to quarantine (or junk)\n\nreject - Email outright rejected by the receiving email relay",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "DMARC Disposition"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "none": {
+                        "color": "green",
+                        "index": 0
+                      },
+                      "quarantine": {
+                        "color": "orange",
+                        "index": 1
+                      },
+                      "reject": {
+                        "color": "red",
+                        "index": 2
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 9,
+        "x": 15,
+        "y": 2
+      },
+      "id": 42,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": false
+      },
+      "pluginVersion": "9.3.2",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "disposition.keyword",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "asc",
+                "orderBy": "_term",
+                "size": "10"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "P908EE4D5633EB9E4"
+          },
+          "metrics": [
+            {
+              "field": "message_count",
+              "id": "1",
+              "type": "sum"
+            }
+          ],
+          "query": "header_from.keyword:$fromdomain",
+          "refId": "A",
+          "timeField": "date_range"
+        }
+      ],
+      "title": "DMARC Disposition",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "disposition.keyword": "DMARC Disposition"
+            }
+          }
+        }
+      ],
+      "type": "table"
     },
     {
       "datasource": {
@@ -333,15 +592,15 @@
         "h": 7,
         "w": 9,
         "x": 6,
-        "y": 2
+        "y": 6
       },
       "id": 7,
       "links": [],
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "table",
-          "placement": "right",
+          "displayMode": "list",
+          "placement": "bottom",
           "showLegend": true
         },
         "tooltip": {
@@ -502,15 +761,15 @@
         "h": 7,
         "w": 9,
         "x": 15,
-        "y": 2
+        "y": 6
       },
       "id": 8,
       "links": [],
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "table",
-          "placement": "right",
+          "displayMode": "list",
+          "placement": "bottom",
           "showLegend": true
         },
         "tooltip": {
@@ -623,7 +882,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 9
+        "y": 13
       },
       "id": 6,
       "links": [],
@@ -794,7 +1053,7 @@
         "h": 7,
         "w": 9,
         "x": 6,
-        "y": 9
+        "y": 13
       },
       "id": 18,
       "links": [],
@@ -1074,7 +1333,7 @@
         "h": 7,
         "w": 9,
         "x": 15,
-        "y": 9
+        "y": 13
       },
       "id": 33,
       "links": [],
@@ -1196,7 +1455,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 16
+        "y": 20
       },
       "id": 2,
       "links": [],
@@ -1367,15 +1626,15 @@
         "h": 7,
         "w": 9,
         "x": 6,
-        "y": 16
+        "y": 20
       },
       "id": 34,
       "links": [],
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "table",
-          "placement": "right",
+          "displayMode": "list",
+          "placement": "bottom",
           "showLegend": true
         },
         "tooltip": {
@@ -1631,7 +1890,7 @@
         "h": 7,
         "w": 9,
         "x": 15,
-        "y": 16
+        "y": 20
       },
       "id": 19,
       "links": [],
@@ -1730,56 +1989,32 @@
               {
                 "id": "custom.width",
                 "value": 300
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 250
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Messages"
+              "options": "Count"
             },
             "properties": [
               {
-                "id": "custom.displayMode",
-                "value": "color-text"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "yellow",
-                      "value": 20
-                    },
-                    {
-                      "color": "orange",
-                      "value": 200
-                    },
-                    {
-                      "color": "super-light-red",
-                      "value": 999.9999
-                    }
-                  ]
-                }
-              },
-              {
                 "id": "custom.width",
-                "value": 100
+                "value": 80
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 17,
-        "w": 8,
+        "h": 11,
+        "w": 9,
         "x": 0,
-        "y": 23
+        "y": 27
       },
       "id": 11,
       "links": [],
@@ -1793,12 +2028,7 @@
           "show": false
         },
         "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Messages"
-          }
-        ]
+        "sortBy": []
       },
       "pluginVersion": "9.3.2",
       "targets": [
@@ -1843,7 +2073,7 @@
             "excludeByName": {},
             "indexByName": {},
             "renameByName": {
-              "Sum": "Messages",
+              "Sum": "Count",
               "header_from.keyword": "Header From"
             }
           }
@@ -1853,273 +2083,12 @@
     },
     {
       "datasource": {
-        "type": "elasticsearch",
-        "uid": "$datasourceag"
-      },
-      "description": "true - DMARC validation passed\n\nfalse - DMARC validation failed",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "center",
-            "displayMode": "auto",
-            "inspect": false
-          },
-          "links": [],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "DMARC Validation Result"
-            },
-            "properties": [
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "0": {
-                        "color": "red",
-                        "index": 0,
-                        "text": "false"
-                      },
-                      "1": {
-                        "color": "green",
-                        "index": 1,
-                        "text": "true"
-                      }
-                    },
-                    "type": "value"
-                  }
-                ]
-              },
-              {
-                "id": "custom.displayMode",
-                "value": "color-text"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 8,
-        "y": 23
-      },
-      "id": 44,
-      "links": [],
-      "options": {
-        "footer": {
-          "enablePagination": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": false
-      },
-      "pluginVersion": "9.3.2",
-      "targets": [
-        {
-          "bucketAggs": [
-            {
-              "fake": true,
-              "field": "passed_dmarc",
-              "id": "3",
-              "settings": {
-                "min_doc_count": 1,
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "0"
-              },
-              "type": "terms"
-            }
-          ],
-          "datasource": {
-            "uid": "$datasourceag"
-          },
-          "hide": false,
-          "metrics": [
-            {
-              "field": "message_count",
-              "id": "1",
-              "type": "sum"
-            }
-          ],
-          "query": "header_from.keyword:$fromdomain",
-          "refId": "A",
-          "timeField": "date_range"
-        }
-      ],
-      "title": "DMARC Validation Results",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "Sum": "Count",
-              "passed_dmarc": "DMARC Validation Result"
-            }
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "elasticsearch",
-        "uid": "P908EE4D5633EB9E4"
-      },
-      "description": "Action taken by the reporting email server after performing DMARC validation and arriving at a result\n\nnone - No action taken to stop the email\n\nquarantine - Email sent to quarantine (or junk)\n\nreject - Email outright rejected by the receiving email relay",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "center",
-            "displayMode": "auto",
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "DMARC Disposition"
-            },
-            "properties": [
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "none": {
-                        "color": "green",
-                        "index": 0
-                      },
-                      "quarantine": {
-                        "color": "orange",
-                        "index": 1
-                      },
-                      "reject": {
-                        "color": "red",
-                        "index": 2
-                      }
-                    },
-                    "type": "value"
-                  }
-                ]
-              },
-              {
-                "id": "custom.displayMode",
-                "value": "color-text"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 16,
-        "y": 23
-      },
-      "id": 42,
-      "options": {
-        "footer": {
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": false
-      },
-      "pluginVersion": "9.3.2",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "disposition.keyword",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "asc",
-                "orderBy": "_term",
-                "size": "10"
-              },
-              "type": "terms"
-            }
-          ],
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "P908EE4D5633EB9E4"
-          },
-          "metrics": [
-            {
-              "field": "message_count",
-              "id": "1",
-              "type": "sum"
-            }
-          ],
-          "query": "header_from.keyword:$fromdomain",
-          "refId": "A",
-          "timeField": "date_range"
-        }
-      ],
-      "title": "DMARC Disposition",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "disposition.keyword": "DMARC Disposition"
-            }
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": {
         "uid": "$datasourceag"
       },
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": "center",
+            "align": "left",
             "displayMode": "auto",
             "filterable": false,
             "inspect": false
@@ -2148,7 +2117,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 69
+                "value": 60
               }
             ]
           },
@@ -2200,9 +2169,9 @@
       },
       "gridPos": {
         "h": 11,
-        "w": 5,
-        "x": 8,
-        "y": 29
+        "w": 4,
+        "x": 9,
+        "y": 27
       },
       "id": 39,
       "links": [],
@@ -2261,7 +2230,7 @@
           "timeField": "date_range"
         }
       ],
-      "title": "Sender Source Country",
+      "title": "Sender Country",
       "transformations": [
         {
           "id": "organize",
@@ -2295,7 +2264,7 @@
         "h": 11,
         "w": 11,
         "x": 13,
-        "y": 29
+        "y": 27
       },
       "hideEmpty": true,
       "hideZero": true,
@@ -2486,7 +2455,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 40
+        "y": 38
       },
       "id": 14,
       "interval": "",
@@ -2729,7 +2698,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 49
+        "y": 47
       },
       "id": 16,
       "links": [],
@@ -2998,7 +2967,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 58
+        "y": 56
       },
       "id": 40,
       "links": [],
@@ -3256,7 +3225,7 @@
       {
         "datasource": {
           "type": "elasticsearch",
-          "uid": "P908EE4D5633EB9E4"
+          "uid": "$datasourceag"
         },
         "filters": [],
         "hide": 0,
@@ -3267,7 +3236,7 @@
     ]
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-14d",
     "to": "now"
   },
   "timepicker": {

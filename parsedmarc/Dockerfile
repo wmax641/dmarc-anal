@@ -12,7 +12,9 @@ WORKDIR /app
 
 COPY parsedmarc.ini ./
 
-# Comment these out if you don't have MaxMind GeoLite API credentials
+# If you have MaxMind Geoip API creds in ./GeoIP.conf, this will download the latest
+# GeoIP database into the WORKDIR, and start a cronjob to update it once a week
+# Comment these out if you don't have MaxMind GeoLite API credentials set up as described.
 # parsedmarc will then instead use the default geoip DB that it comes packaged with 
 COPY --chmod=640 GeoIP.conf ./
 RUN wget https://github.com/maxmind/geoipupdate/releases/download/v${GEOIP_VER}/geoipupdate_${GEOIP_VER}_linux_amd64.tar.gz \
