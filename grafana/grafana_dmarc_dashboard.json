@@ -29,7 +29,7 @@
   "liveNow": false,
   "panels": [
     {
-      "collapsed": false,
+      "collapsed": true,
       "datasource": {
         "type": "elasticsearch",
         "uid": "P908EE4D5633EB9E4"
@@ -41,7 +41,30 @@
         "y": 0
       },
       "id": 28,
-      "panels": [],
+      "panels": [
+        {
+          "description": "",
+          "gridPos": {
+            "h": 12,
+            "w": 23,
+            "x": 0,
+            "y": 1
+          },
+          "id": 26,
+          "links": [],
+          "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
+            "content": "# DMARC Alignment Guide\r\nDMARC ensures that SPF and DKIM authentication mechanisms actually authenticate against the same domain that the end user sees displayed in their email clients.\r\n\r\nThis is acheived if **BOTH** these conditions are satisfied\r\n* passing either DKIM **or** SPF, \r\n* the corresponding passing indicator is also in alignment; see below for alignment definitions\r\n\r\n### Definitions:\r\n\r\n**SPF Pass**  - The IP address of the email sender is authorized to send from the domain. SPF validates against the RFC5321.Envelope FROM.\r\n\r\n**DKIM Pass** - At least 1 signature in the DKIM header is successfully validated. DKIM validates against the domain specified in the DKIM signature.\r\n\r\n**SPF Alignment** - The email domain used for SPF validation (RFC5321.Envelope FROM) aligns with the domain in the message's from header that's displayed in the email client (RFC5322.Header FROM)\r\n\r\n**DKIM Alignment** - At least 1 validated DKIM signature's designated email domain aligns with the domain in the message's from header that's displayed in the email client (RFC5322.Header FROM)\r\n\r\n",
+            "mode": "markdown"
+          },
+          "pluginVersion": "9.3.2",
+          "type": "text"
+        }
+      ],
       "targets": [
         {
           "datasource": {
@@ -55,28 +78,6 @@
       "type": "row"
     },
     {
-      "description": "",
-      "gridPos": {
-        "h": 12,
-        "w": 23,
-        "x": 0,
-        "y": 1
-      },
-      "id": 26,
-      "links": [],
-      "options": {
-        "code": {
-          "language": "plaintext",
-          "showLineNumbers": false,
-          "showMiniMap": false
-        },
-        "content": "# DMARC Alignment Guide\r\nDMARC ensures that SPF and DKIM authentication mechanisms actually authenticate against the same domain that the end user sees displayed in their email clients.\r\n\r\nThis is acheived if **BOTH** these conditions are satisfied\r\n* passing either DKIM **or** SPF, \r\n* the corresponding passing indicator is also in alignment; see below for alignment definitions\r\n\r\n### Definitions:\r\n\r\n**SPF Pass**  - The IP address of the email sender is authorized to send from the domain. SPF validates against the RFC5321.Envelope FROM.\r\n\r\n**DKIM Pass** - At least 1 signature in the DKIM header is successfully validated. DKIM validates against the domain specified in the DKIM signature.\r\n\r\n**SPF Alignment** - The email domain used for SPF validation (RFC5321.Envelope FROM) aligns with the domain in the message's from header that's displayed in the email client (RFC5322.Header FROM)\r\n\r\n**DKIM Alignment** - At least 1 validated DKIM signature's designated email domain aligns with the domain in the message's from header that's displayed in the email client (RFC5322.Header FROM)\r\n\r\n",
-        "mode": "markdown"
-      },
-      "pluginVersion": "9.3.2",
-      "type": "text"
-    },
-    {
       "collapsed": false,
       "datasource": {
         "type": "elasticsearch",
@@ -86,7 +87,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 1
       },
       "id": 30,
       "panels": [],
@@ -160,7 +161,7 @@
         "h": 11,
         "w": 6,
         "x": 0,
-        "y": 14
+        "y": 2
       },
       "id": 5,
       "links": [],
@@ -308,7 +309,7 @@
         "h": 4,
         "w": 9,
         "x": 6,
-        "y": 14
+        "y": 2
       },
       "id": 44,
       "links": [],
@@ -440,7 +441,7 @@
         "h": 4,
         "w": 9,
         "x": 15,
-        "y": 14
+        "y": 2
       },
       "id": 42,
       "options": {
@@ -591,7 +592,7 @@
         "h": 7,
         "w": 9,
         "x": 6,
-        "y": 18
+        "y": 6
       },
       "id": 7,
       "links": [],
@@ -760,7 +761,7 @@
         "h": 7,
         "w": 9,
         "x": 15,
-        "y": 18
+        "y": 6
       },
       "id": 8,
       "links": [],
@@ -881,7 +882,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 25
+        "y": 13
       },
       "id": 6,
       "links": [],
@@ -1052,7 +1053,7 @@
         "h": 7,
         "w": 9,
         "x": 6,
-        "y": 25
+        "y": 13
       },
       "id": 18,
       "links": [],
@@ -1332,7 +1333,7 @@
         "h": 7,
         "w": 9,
         "x": 15,
-        "y": 25
+        "y": 13
       },
       "id": 33,
       "links": [],
@@ -1454,7 +1455,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 32
+        "y": 20
       },
       "id": 2,
       "links": [],
@@ -1625,15 +1626,15 @@
         "h": 7,
         "w": 9,
         "x": 6,
-        "y": 32
+        "y": 20
       },
       "id": 34,
       "links": [],
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "table",
-          "placement": "right",
+          "displayMode": "list",
+          "placement": "bottom",
           "showLegend": true
         },
         "tooltip": {
@@ -1889,7 +1890,7 @@
         "h": 7,
         "w": 9,
         "x": 15,
-        "y": 32
+        "y": 20
       },
       "id": 19,
       "links": [],
@@ -2013,7 +2014,7 @@
         "h": 11,
         "w": 9,
         "x": 0,
-        "y": 39
+        "y": 27
       },
       "id": 11,
       "links": [],
@@ -2170,7 +2171,7 @@
         "h": 11,
         "w": 4,
         "x": 9,
-        "y": 39
+        "y": 27
       },
       "id": 39,
       "links": [],
@@ -2263,7 +2264,7 @@
         "h": 11,
         "w": 11,
         "x": 13,
-        "y": 39
+        "y": 27
       },
       "hideEmpty": true,
       "hideZero": true,
@@ -2454,7 +2455,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 50
+        "y": 38
       },
       "id": 14,
       "interval": "",
@@ -2697,7 +2698,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 59
+        "y": 47
       },
       "id": 16,
       "links": [],
@@ -2966,7 +2967,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 68
+        "y": 56
       },
       "id": 40,
       "links": [],
@@ -3235,7 +3236,7 @@
     ]
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-14d",
     "to": "now"
   },
   "timepicker": {

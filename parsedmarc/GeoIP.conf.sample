@@ -10,4 +10,5 @@ AccountID XXXXXX
 LicenseKey XXXXXXXXXXXXXXXX
 
 # `EditionIDs` is from your MaxMind account.
-EditionIDs GeoLite2-ASN GeoLite2-City GeoLite2-Country
+#EditionIDs GeoLite2-ASN GeoLite2-City GeoLite2-Country
+EditionIDs GeoLite2-Country
