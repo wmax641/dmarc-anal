@@ -21,7 +21,7 @@
       }
     ]
   },
-  "description": "Dashboard for reviewing reports from ParseDMARC",
+  "description": "Analytics dashboard for reviewing reports from ParseDMARC",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
@@ -822,13 +822,14 @@
           "timeField": "date_range"
         }
       ],
-      "title": "Message Disposition",
+      "title": "DMARC Message Disposition",
       "type": "timeseries"
     },
     {
       "datasource": {
         "uid": "$datasourceag"
       },
+      "description": "true - The HEADER FROM email domain displayed to client is in alignment with the ENVELOPE FROM used for the SPF check \n\nfalse - HEADER FROM and ENVELOPE FROM are not in alignment. ",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1402,6 +1403,7 @@
       "datasource": {
         "uid": "$datasourceag"
       },
+      "description": "true - The HEADER FROM email domain displayed to client is in alignment with the email domain used found in at least 1 DKIM signature\n\nfalse - HEADER FROM not in alignment with any email domains found in any of the DKIM signatures.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1951,7 +1953,7 @@
           "timeField": "date_range"
         }
       ],
-      "title": "DKIM Results",
+      "title": "DKIM Authentication Results",
       "transparent": true,
       "type": "timeseries"
     },
@@ -2011,8 +2013,8 @@
         ]
       },
       "gridPos": {
-        "h": 11,
-        "w": 9,
+        "h": 12,
+        "w": 8,
         "x": 0,
         "y": 27
       },
@@ -2065,7 +2067,7 @@
           "timeField": "date_range"
         }
       ],
-      "title": "Message Volume by Header From",
+      "title": "Count by Header From",
       "transformations": [
         {
           "id": "organize",
@@ -2168,9 +2170,9 @@
         ]
       },
       "gridPos": {
-        "h": 11,
+        "h": 12,
         "w": 4,
-        "x": 9,
+        "x": 8,
         "y": 27
       },
       "id": 39,
@@ -2230,7 +2232,7 @@
           "timeField": "date_range"
         }
       ],
-      "title": "Sender Country",
+      "title": "Count by Sender Country",
       "transformations": [
         {
           "id": "organize",
@@ -2261,9 +2263,9 @@
       "decimals": 0,
       "esMetric": "Count",
       "gridPos": {
-        "h": 11,
-        "w": 11,
-        "x": 13,
+        "h": 12,
+        "w": 12,
+        "x": 12,
         "y": 27
       },
       "hideEmpty": true,
@@ -2347,6 +2349,7 @@
         "type": "elasticsearch",
         "uid": "$datasourceag"
       },
+      "description": "Reverse IP address lookup of the sender IP.\nGood indication of the sending service.",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -2362,10 +2365,6 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           }
@@ -2386,12 +2385,164 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Country"
+              "options": "Messages"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "percentage",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Reverse DNS Base"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 80
+                "value": 300
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 0,
+        "y": 39
+      },
+      "id": 46,
+      "interval": "",
+      "links": [],
+      "options": {
+        "footer": {
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Messages"
+          }
+        ]
+      },
+      "pluginVersion": "9.3.2",
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "$$hashKey": "object:921",
+              "fake": true,
+              "field": "source_base_domain.keyword",
+              "id": "6",
+              "settings": {
+                "min_doc_count": 1,
+                "missing": "-",
+                "order": "desc",
+                "orderBy": "4",
+                "size": "20"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "uid": "$datasourceag"
+          },
+          "hide": false,
+          "metrics": [
+            {
+              "$$hashKey": "object:919",
+              "field": "message_count",
+              "id": "4",
+              "meta": {},
+              "settings": {},
+              "type": "sum"
+            }
+          ],
+          "query": "header_from.keyword:$fromdomain",
+          "refId": "A",
+          "timeField": "date_range"
+        }
+      ],
+      "title": "Count by Reverse DNS Base (top 20)",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Sum": "Messages",
+              "disposition.keyword": "DMARC Disposition",
+              "source_base_domain.keyword": "Reverse DNS Base",
+              "source_country.keyword": "Country",
+              "source_ip_address.keyword": "IP Address",
+              "source_reverse_dns.keyword": "Reverse DNS"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "$datasourceag"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IP Address"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 140
               }
             ]
           },
@@ -2430,32 +2581,34 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Base Domain"
+              "options": "Reverse DNS"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 372
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Reverse DNS Base"
             },
             "properties": [
               {
                 "id": "custom.width",
                 "value": 300
-              },
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "targetBlank": true,
-                    "title": "Visit Domain",
-                    "url": "https://${__data.fields[\"source_base_domain.keyword\"]}"
-                  }
-                ]
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 9,
-        "w": 24,
-        "x": 0,
-        "y": 38
+        "h": 10,
+        "w": 16,
+        "x": 8,
+        "y": 39
       },
       "id": 14,
       "interval": "",
@@ -2491,7 +2644,7 @@
                 "missing": "-",
                 "order": "desc",
                 "orderBy": "4",
-                "size": "1000"
+                "size": "20"
               },
               "type": "terms"
             },
@@ -2522,31 +2675,6 @@
                 "size": "1000"
               },
               "type": "terms"
-            },
-            {
-              "$$hashKey": "object:924",
-              "fake": true,
-              "field": "source_country.keyword",
-              "id": "9",
-              "settings": {
-                "min_doc_count": 1,
-                "missing": "-",
-                "order": "desc",
-                "orderBy": "4",
-                "size": "1000"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "disposition.keyword",
-              "id": "10",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "10"
-              },
-              "type": "terms"
             }
           ],
           "datasource": {
@@ -2568,7 +2696,7 @@
           "timeField": "date_range"
         }
       ],
-      "title": "Top 1000 Message Source IP Addresses",
+      "title": "Count by IP Address (top 20)",
       "transformations": [
         {
           "id": "organize",
@@ -2578,7 +2706,7 @@
             "renameByName": {
               "Sum": "Messages",
               "disposition.keyword": "DMARC Disposition",
-              "source_base_domain.keyword": "Base Domain",
+              "source_base_domain.keyword": "Reverse DNS Base",
               "source_country.keyword": "Country",
               "source_ip_address.keyword": "IP Address",
               "source_reverse_dns.keyword": "Reverse DNS"
@@ -2590,6 +2718,7 @@
     },
     {
       "datasource": {
+        "type": "elasticsearch",
         "uid": "$datasourceag"
       },
       "fieldConfig": {
@@ -2698,7 +2827,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 47
+        "y": 49
       },
       "id": 16,
       "links": [],
@@ -2967,7 +3096,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 56
+        "y": 58
       },
       "id": 40,
       "links": [],
@@ -3265,7 +3394,7 @@
     ]
   },
   "timezone": "",
-  "title": "DMARC Reports",
+  "title": "DMARC Validation Analytics",
   "uid": "SDksirRWz",
   "version": 1,
   "weekStart": ""
