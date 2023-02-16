@@ -1202,7 +1202,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "orange",
+                  "fixedColor": "red",
                   "mode": "fixed"
                 }
               }
@@ -1277,7 +1277,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "red",
+                  "fixedColor": "#848484",
                   "mode": "fixed"
                 }
               }
@@ -1292,7 +1292,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "super-light-green",
+                  "fixedColor": "super-light-red",
                   "mode": "fixed"
                 }
               }
@@ -1962,6 +1962,7 @@
         "type": "elasticsearch",
         "uid": "$datasourceag"
       },
+      "description": "Header From is what's displayed in the email client, and is what a human reader sees when they read the email",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -1990,7 +1991,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 300
+                "value": 321
               },
               {
                 "id": "custom.minWidth",
@@ -2005,10 +2006,44 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 80
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "super-light-green",
+                      "value": null
+                    },
+                    {
+                      "color": "light-green",
+                      "value": 10
+                    },
+                    {
+                      "color": "green",
+                      "value": 100
+                    },
+                    {
+                      "color": "semi-dark-green",
+                      "value": 1000
+                    },
+                    {
+                      "color": "dark-green",
+                      "value": 10000
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName"
+            },
+            "properties": []
           }
         ]
       },
@@ -2139,24 +2174,24 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
+                      "color": "super-light-green",
                       "value": null
                     },
                     {
-                      "color": "super-light-green",
+                      "color": "light-green",
                       "value": 10
                     },
                     {
-                      "color": "yellow",
+                      "color": "green",
                       "value": 100
                     },
                     {
-                      "color": "semi-dark-yellow",
-                      "value": 200
+                      "color": "semi-dark-green",
+                      "value": 1000
                     },
                     {
-                      "color": "red",
-                      "value": 500
+                      "color": "dark-green",
+                      "value": 10000
                     }
                   ]
                 }
@@ -2171,7 +2206,7 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 4,
+        "w": 6,
         "x": 8,
         "y": 27
       },
@@ -2264,8 +2299,8 @@
       "esMetric": "Count",
       "gridPos": {
         "h": 12,
-        "w": 12,
-        "x": 12,
+        "w": 10,
+        "x": 14,
         "y": 27
       },
       "hideEmpty": true,
@@ -2385,7 +2420,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Messages"
+              "options": "Count"
             },
             "properties": [
               {
@@ -2395,11 +2430,27 @@
               {
                 "id": "thresholds",
                 "value": {
-                  "mode": "percentage",
+                  "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
+                      "color": "super-light-green",
                       "value": null
+                    },
+                    {
+                      "color": "light-green",
+                      "value": 10
+                    },
+                    {
+                      "color": "green",
+                      "value": 100
+                    },
+                    {
+                      "color": "semi-dark-green",
+                      "value": 1000
+                    },
+                    {
+                      "color": "dark-green",
+                      "value": 10000
                     }
                   ]
                 }
@@ -2418,7 +2469,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 300
+                "value": 318
               }
             ]
           }
@@ -2496,7 +2547,7 @@
             "excludeByName": {},
             "indexByName": {},
             "renameByName": {
-              "Sum": "Messages",
+              "Sum": "Count",
               "disposition.keyword": "DMARC Disposition",
               "source_base_domain.keyword": "Reverse DNS Base",
               "source_country.keyword": "Country",
@@ -2549,7 +2600,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Messages"
+              "options": "Count"
             },
             "properties": [
               {
@@ -2559,15 +2610,27 @@
               {
                 "id": "thresholds",
                 "value": {
-                  "mode": "percentage",
+                  "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
+                      "color": "super-light-green",
                       "value": null
                     },
                     {
-                      "color": "dark-purple",
-                      "value": 101
+                      "color": "light-green",
+                      "value": 10
+                    },
+                    {
+                      "color": "green",
+                      "value": 100
+                    },
+                    {
+                      "color": "semi-dark-green",
+                      "value": 1000
+                    },
+                    {
+                      "color": "dark-green",
+                      "value": 10000
                     }
                   ]
                 }
@@ -2626,7 +2689,7 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Messages"
+            "displayName": "Count"
           }
         ]
       },
@@ -2704,7 +2767,7 @@
             "excludeByName": {},
             "indexByName": {},
             "renameByName": {
-              "Sum": "Messages",
+              "Sum": "Count",
               "disposition.keyword": "DMARC Disposition",
               "source_base_domain.keyword": "Reverse DNS Base",
               "source_country.keyword": "Country",
