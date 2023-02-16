@@ -23,12 +23,6 @@ cp parsedmarc.ini.sample parsedmarc.ini
 ./parsedmarc/parsedmarc.ini
 ```
 
-* Choose target Elasticsearch and Grafana versions to use if not using currently configured defualts. Update references in:
-```
-./docker-compose.yml
-./grafana/Dockerfile
-```
-
 * Update timezones in dockerfiles;
 ```
 ./grafana/Dockerfile
