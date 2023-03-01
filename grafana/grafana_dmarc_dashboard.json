@@ -105,6 +105,7 @@
     },
     {
       "datasource": {
+        "type": "elasticsearch",
         "uid": "$datasourceag"
       },
       "description": "",
@@ -209,7 +210,7 @@
             },
             {
               "$$hashKey": "object:386",
-              "field": "date_range",
+              "field": "date_begin",
               "id": "2",
               "settings": {
                 "interval": "auto",
@@ -2038,12 +2039,6 @@
                 "value": "color-text"
               }
             ]
-          },
-          {
-            "matcher": {
-              "id": "byName"
-            },
-            "properties": []
           }
         ]
       },
@@ -2797,8 +2792,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2824,8 +2818,7 @@
                   "mode": "percentage",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     }
                   ]
                 }
@@ -3042,8 +3035,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3069,8 +3061,7 @@
                   "mode": "percentage",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "dark-purple",
@@ -3312,7 +3303,7 @@
       "type": "table"
     }
   ],
-  "refresh": "15m",
+  "refresh": false,
   "schemaVersion": 37,
   "style": "dark",
   "tags": [
