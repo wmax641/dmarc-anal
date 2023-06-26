@@ -1,4 +1,4 @@
-FROM grafana/grafana-oss:9.3.2
+FROM grafana/grafana-oss:10.0.1
 
 ARG TZ=Australia/Sydney
 
