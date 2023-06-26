@@ -25,7 +25,7 @@ RUN wget https://github.com/maxmind/geoipupdate/releases/download/v${GEOIP_VER}/
     && echo "1 2 * * 6 /app/geoipupdate/geoipupdate -f /app/GeoIP.conf -d /app" >> /etc/crontabs/root
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-RUN pip3 install parsedmarc
+RUN pip3 install -r requirements.txt
 
 RUN adduser -D parsedmarc
 
