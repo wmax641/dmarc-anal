@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 ARG TZ=Australia/Sydney
-ARG GEOIP_VER=4.10.0
+ARG GEOIP_VER=5.1.1
 
 RUN apk update --no-cache --purge \
     && apk upgrade --no-cache \

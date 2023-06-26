@@ -1,1 +1,1 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:7.17.8@sha256:2fe49bcdae9b623f1a38f979bfe51d2d7df94515dba731b1e1be9932349e1374
+FROM elasticsearch:7.17.10
