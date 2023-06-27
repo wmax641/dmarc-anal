@@ -11,6 +11,7 @@ RUN apk update --no-cache --purge \
 WORKDIR /app
 
 COPY parsedmarc.ini ./
+COPY requirements.txt ./
 
 # If you have MaxMind Geoip API creds in ./GeoIP.conf, this will download the latest
 # GeoIP database into the WORKDIR, and start a cronjob to update it once a week
